@@ -146,7 +146,7 @@ int main(int argc, char **argv){
     filecount = getint(vdd);
     vddfiles = malloc(sizeof(struct vddfile) * filecount);
     if(!vddfiles){
-        printf("Malloc Fail. Requested %lu bytes. filecount %u sizeof %u", (long) sizeof(struct vddfile) * (long) filecount, filecount, sizeof(struct vddfile) );
+        printf("Malloc Fail. Requested %lu bytes. filecount %u sizeof %lu", (long) sizeof(struct vddfile) * (long) filecount, filecount, sizeof(struct vddfile) );
         exit(25);
     }
     if(argInfo || argExtract){
