@@ -87,6 +87,7 @@ void RepackVDD(char *filename, int filecount, struct vddfile *vddfiles){
         fputc(0, out);
     }
     fclose(out);
+    printf("Wrote VDD to %s\n", strcat(outpath, filename));
 }
 
 
@@ -109,7 +110,7 @@ void ExtractFiles(FILE *vdd, unsigned int filecount, struct vddfile *vddfiles){
 
 int main(int argc, char **argv){
     FILE *vdd, *out;
-    char *vddname, *filename, *head, *tail;
+    char *vddname;
     char c;
     unsigned int fileindex = 4;
     unsigned int filecount;
@@ -133,7 +134,7 @@ int main(int argc, char **argv){
     } else if(argExtract || argRepack || argInfo){
         vddname = argv[2];
     } else if(argHelp){
-        printf("VDDReader by jegneg\n\nExtract VDD files from Puyo Puyo Box and Waku Puyo Dungeon\n\nUsage:\n\nvddreader --extract [filename.vdd]\nExtract all of the files contained in [filename.vdd] to 'out' folder, and export file information to 'vddinfo.txt'\n\nvddreader --repack [filename.vdd]\nRepack all of the files contained in 'out' folder into [filename.vdd]\n\nvddreader --info [filename.vdd]\nOnly export file structure information of [filename.vdd] to 'vddinfo.txt'\n\nvddreader --help\nView this help.");
+        printf("VDDReader by jegneg\n\nExtract VDD files from Puyo Puyo Box and Waku Puyo Dungeon\n\nUsage:\n\nvddreader --extract [filename.vdd]\nExtract all of the files contained in [filename.vdd] to 'out' folder, and export file information to 'vddinfo.txt'\n\nvddreader --repack [filename.vdd]\nRepack all of the files contained in 'out' folder into [filename.vdd]\n\nvddreader --info [filename.vdd]\nOnly export file structure information of [filename.vdd] to 'vddinfo.txt'\n\nvddreader --help\nView this help.\n");
         exit(0);
     }
     printf("Processing file...\n");
@@ -152,7 +153,6 @@ int main(int argc, char **argv){
         fprintf(out, "%s\n", vddname);
         fprintf(out, "file count: %d\n", filecount);
     }
-    free(head);
     for(i = 0; i < filecount; i++){
         vddfiles[i].name = getstr(16, vdd);
         vddfiles[i].sector = getint(vdd);
@@ -162,8 +162,6 @@ int main(int argc, char **argv){
             fprintf(out, "%s at 0x%X\n\tsector:\t\t0x%X\n\taddress:\t0x%X\n\tfile size:\t0x%X bytes\n",
                 vddfiles[i].name, fileindex, vddfiles[i].sector, vddfiles[i].address, vddfiles[i].filesize);
         }
-        free(filename);
-        free(tail);
         fileindex += 24;
     }
     if(argInfo || argExtract){
@@ -177,7 +175,7 @@ int main(int argc, char **argv){
         RepackVDD(vddname, filecount, vddfiles);
     }
     fclose(vdd);
-    fclose(out);
+    if(out) fclose(out);
     printf("\nDone.\n");
     free(vddfiles);
     return 0;
