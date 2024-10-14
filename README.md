@@ -26,6 +26,6 @@ Only export file structure information of `[filename.vdd]` into `'vddinfo.txt'`
 ### Building
 
 ```
-$ gcc vddreader.c -o vddreader 
+$ gcc vddreader.c -o vddreader -lm
 ```
 Important: A folder named `'out'` must be included alongside with the executable, otherwise it wont work. I was simply too lazy to make the program create its own folder.
