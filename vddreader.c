@@ -87,7 +87,7 @@ void RepackVDD(char *filename, int filecount, struct vddfile *vddfiles){
         fputc(0, out);
     }
     fclose(out);
-    printf("Wrote VDD to %s\n", strcat(outpath, filename));
+    printf("VDD repack data written to %s\n", outpath);
 }
 
 
